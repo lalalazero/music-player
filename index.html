@@ -191,10 +191,10 @@
                 }
                 loadMusic(musicList[currentIndex]);
             }
+
             music.onplay = function (ev) {
-
+                clearInterval(timer);
             }
-
             function updateProgress() {
                 var width = Math.ceil(music.currentTime / music.duration * 200) + 'px';
                 $('.now').style.width = width;
@@ -225,18 +225,20 @@
                 }
 
             }
-            var children = $('.list').children[0].children;
-            for(var children_i = 0; children_i < children.length; children_i++) {
-                var li = children[children_i];
-                li.ondblclick = function (ev) {
-                    console.log('dbl click');
-                    console.log(li);
-                    if(li['id'].length > 0) {
-                        console.log(id);
-                        lastIndex = currentIndex;
-                        currentIndex = parseInt(id[1]);
-                        loadMusic(musicList[currentIndex]);
-                    }
+            $('.list').ondblclick =function (ev) {
+                if(ev.target.tagName.toLowerCase() === 'span'){
+                    var li = ev.target.parentNode;
+
+                }else if(ev.target.tagName.toLowerCase() === 'li') {
+                    var li = ev.target;
+
+                }
+                console.log(li);
+                if(li['id'] !== undefined){
+                    var id = li['id'].split('-');
+                    lastIndex = currentIndex;
+                    currentIndex = parseInt(id[1]);
+                    loadMusic(musicList[currentIndex]);
                 }
             }
 
