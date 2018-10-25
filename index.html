@@ -102,20 +102,57 @@
             var loopOne = false;
             var timer;
             function getMusicList() {
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET','/music.json');
-                xhr.send();
-                xhr.onload = function (ev) {
-                    var musicList2 = JSON.parse(this.responseText);
-                    // 凑齐10首歌
-                    for(var i = 0; i < 10;i++) {
-                        musicList.push(musicList2[i%4]);
-                    }
-                    console.log(musicList);
-                    currentIndex = 0;
-                    loadMusic(musicList[currentIndex]);
-                    loadMusicList(musicList);
+
+                // var xhr = new XMLHttpRequest();
+                // xhr.open('GET','/music.json');
+                // xhr.send();
+                // xhr.onload = function (ev) {
+                //     var musicList2 = JSON.parse(this.responseText);
+                //     // 凑齐10首歌
+                //     for(var i = 0; i < 10;i++) {
+                //         musicList.push(musicList2[i%4]);
+                //     }
+                //     console.log(musicList);
+                //     currentIndex = 0;
+                //     loadMusic(musicList[currentIndex]);
+                //     loadMusicList(musicList);
+                // }
+
+                var musicArr = [{
+                    "src": "http://cloud.hunger-valley.com/music/玫瑰.mp3",
+                    "title": "玫瑰0",
+                    "auther": "贰佰",
+                    "img": "http://cloud.hunger-valley.com/17-9-22/28212907.jpg"
+                }, {
+                    "src": "http://cloud.hunger-valley.com/music/ifyou.mp3",
+                    "title": "IF YOU1",
+                    "auther": "Big Bang",
+                    "img": "http://cloud.hunger-valley.com/17-9-22/87786461.jpg"
+                },
+                {
+                    "src": "http://cloud.hunger-valley.com/music/ifyou.mp3",
+                    "title": "IF YOU2",
+                    "auther": "Big Bang",
+                    "img": "http://cloud.hunger-valley.com/17-9-22/87786461.jpg"
+                },
+                {
+                    "src": "http://cloud.hunger-valley.com/music/ifyou.mp3",
+                    "title": "IF YOU3",
+                    "auther": "Big Bang",
+                    "img": "http://cloud.hunger-valley.com/17-9-22/87786461.jpg"
+                }];
+
+                var musicList2 = JSON.parse(JSON.stringify(musicArr));
+                // 凑齐10首歌
+                for(var i = 0; i < 10;i++) {
+                    musicList.push(musicList2[i%4]);
                 }
+                console.log(musicList);
+                currentIndex = 0;
+                loadMusic(musicList[currentIndex]);
+                loadMusicList(musicList);
+
+
             }
 
             function loadMusic(obj) {
