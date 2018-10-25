@@ -1,0 +1,122 @@
+ul, ol {
+    list-style: none;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.layout {
+    margin-top: 40px;
+}
+.layout .content {
+    width: 800px;
+    margin: 0 auto;
+}
+.layout .content .panel {
+    border: 1px solid #cccccc;
+    float: left;
+    text-align: center;
+    width: 30%;
+    position: relative;
+}
+.layout .content .list {
+    border: 1px solid #ccc;
+    border-left: none;
+    width: 70%;
+    margin-left: 30%;
+}
+
+.clearfix {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.info {
+    padding: 5px 10px;
+    background-color: rgba(184, 184, 184, 0.2);
+}
+
+.title {
+    font-weight: bold;
+}
+
+.author {
+    font-size: 14px;
+    color: #b8b8b8;
+    margin-top: 3px;
+}
+
+.image {
+    margin: 30px auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    box-shadow: 2px 2px 1px #000, -1px -1px 2px #000;
+    background-position: center;
+}
+
+.control {
+    padding: 20px 10px;
+    background-color: rgba(184, 184, 184, 0.2);
+}
+.control span>i {
+    font-size: 25px;
+    margin: 0 5px;
+}
+
+.bar {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: right;
+}
+.bar .progress {
+    margin: 0 20px;
+    height: 5px;
+    width: 200px;
+    background-color: #ccc;
+    border-radius: 2px;
+}
+.bar .now {
+    margin-left: 20px;
+    background-color: #1f1a1a;
+    height: 5px;
+    border-radius: 2px;
+    width: 0px;
+    margin-top: -5px;
+}
+.bar .now::after {
+    content: '';
+    display: inline-block;
+    background-color: red;
+    width: 1px;
+    height: 1px;
+}
+.bar .time {
+    font-size:12px;
+    margin-right: 18px;
+}
+
+.list {
+    background-color: rgba(184, 184, 184, 0.2);
+    border: 1px solid #ccc;
+}
+.list li {
+    line-height: 30px;
+    height: 42px;
+    padding: 6px 20px 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.list li span{
+    margin-right: 10px;
+}
+.list li:nth-child(even) {
+    background-color: #fff;
+}

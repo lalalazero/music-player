@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="./css/iconfont.css">
+    <!--<link rel="stylesheet" href="./css/style.scss">-->
+    <!--<link rel="stylesheet" href="./dist/style.6b54f5b7.css">-->
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Document</title>
+</head>
+<body>
+        <div class="layout">
+            <div class="content clearfix">
+                <div class="panel">
+                    <div class="info">
+                        <div class="title">
+                            <span >End Game</span>
+                        </div>
+                        <div class="author">
+                            <span >Taylor Swift/Ed Sheeran/Future</span>
+                        </div>
+                    </div>
+                    <div class="image">
+                    </div>
+                    <div class="bar">
+                        <div class="progress"></div>
+                        <div class="now"></div>
+                        <span class="time">00:00</span>
+                    </div>
+                    <div class="control">
+                        <span id="loop"><i class="iconfont icon-loop-all"></i></span>
+                        <span id="prev"><i class="iconfont icon-prev"></i></span>
+                        <span id="play"><i class="iconfont icon-playing"></i></span>
+                        <span id="next"><i class="iconfont icon-next"></i></span>
+                        <span id="list"><i class="iconfont icon-list"></i></span>
+                    </div>
+
+                </div>
+                <div class="list">
+                    <ul>
+                        <li id="item-0">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span>song 1</span></li>
+                        <li id="item-1">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span>song 1song 1song 1song 1song 1song 1song 1song 1song 1song 1song 1song 1</span>
+                        </li>
+                        <li id="item-2">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span>song 1</span>
+                        </li>
+                        <li id="item-3">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span>song 1</span>
+                        </li>
+                        <li id="item-4">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span>song 1</span>
+                        </li>
+                        <li id="item-5">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span></span>
+                        </li>
+                        <li id="item-6">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span></span>
+                        </li>
+                        <li id="item-7">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span></span>
+                        </li>
+                        <li id="item-8">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span></span>
+                        </li>
+                        <li id="item-9">
+                            <span class="iconfont icon-SanMiAppglyphico6"></span>
+                            <span></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function $(selector) {
+                return document.querySelector(selector);
+            }
+            function $$(selector) {
+                return document.querySelectorAll(selector);
+            }
+            window.onload = function (ev) {
+                getMusicList();
+            }
+            var currentIndex;
+            var lastIndex = -1;
+            var music = new Audio();
+            var musicList = [];
+            var loopOne = false;
+            var timer;
+            function getMusicList() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET','/music.json');
+                xhr.send();
+                xhr.onload = function (ev) {
+                    var musicList2 = JSON.parse(this.responseText);
+                    // 凑齐10首歌
+                    for(var i = 0; i < 10;i++) {
+                        musicList.push(musicList2[i%4]);
+                    }
+                    console.log(musicList);
+                    currentIndex = 0;
+                    loadMusic(musicList[currentIndex]);
+                    loadMusicList(musicList);
+                }
+            }
+
+            function loadMusic(obj) {
+                music.src = obj.src;
+                $('.title>span').innerText = obj.title;
+                $('.author>span').innerText = obj.auther;
+                $('.image').style.backgroundImage = 'url(' + obj.img + ')';
+                music.play();
+                $('#play').querySelector('.iconfont').classList.add('icon-playing');
+                $('#play').querySelector('.iconfont').classList.remove('icon-pause');
+
+                // 更改列表的当前播放曲目
+                var span = $('.list').children[0].children[currentIndex].children[0];
+                span.classList.remove('icon-SanMiAppglyphico6');
+                span.classList.add('icon-playing-item');
+                if(lastIndex !== -1 && lastIndex !== currentIndex) {
+                    var last = $('.list').children[0].children[lastIndex].children[0];
+                    last.classList.toggle('icon-playing-item');
+                    last.classList.toggle('icon-SanMiAppglyphico6');
+                }
+            }
+
+            function loadMusicList(list) {
+                var li = $('.list').children[0].children;
+                // console.log('li');
+                // console.log(li);
+                for(var i = 0; i < li.length; i++) {
+                    // console.log(li[i]);
+                    li[i].children[1].innerText = list[i].title + ' —— ' + list[i].auther;
+                }
+            }
+
+            $('#play').onclick = function (ev) {
+                var icon = this.querySelector('.iconfont');
+                if(music.paused) {
+                    music.play();
+                    icon.classList.add('icon-playing');
+                    icon.classList.remove('icon-pause');
+                }else {
+                    music.pause();
+                    icon.classList.add('icon-pause');
+                    icon.classList.remove('icon-playing');
+                }
+            }
+            $('#prev').onclick = function (ev) {
+                lastIndex = currentIndex;
+                if(!loopOne) {
+                    currentIndex = (--currentIndex + musicList.length) % musicList.length;
+                }
+                loadMusic(musicList[currentIndex]);
+
+            }
+            $('#next').onclick = function (ev) {
+                lastIndex = currentIndex;
+                if(!loopOne) {
+                    currentIndex = (++currentIndex) % musicList.length;
+                }
+                loadMusic(musicList[currentIndex]);
+            }
+            
+            music.onplaying = function (ev) {
+                timer = setInterval(function () {
+                    console.log('on playing');
+                    updateProgress()
+                },1000)
+            }
+            music.onpause = function (ev) {
+                clearInterval(timer);
+            }
+            music.onended = function (ev) {
+                if(!loopOne) {
+                    currentIndex += 1;
+                }
+                loadMusic(musicList[currentIndex]);
+            }
+            music.onplay = function (ev) {
+
+            }
+
+            function updateProgress() {
+                var width = Math.ceil(music.currentTime / music.duration * 200) + 'px';
+                $('.now').style.width = width;
+                var minutes = parseInt(music.currentTime / 60);
+                var seconds = parseInt(music.currentTime % 60) + '';
+                seconds = seconds.length === 2 ? seconds : '0' + seconds;
+                $('.time').innerText = minutes + ':' + seconds;
+            }
+
+            $('#loop').onclick = function (ev) {
+                var span = $('#loop').children[0];
+                span.classList.toggle('icon-loop-all');
+                span.classList.toggle('icon-loop-one');
+                if(span.classList.contains('icon-loop-one')) {
+                    loopOne = true;
+                }else {
+                    loopOne = false;
+                }
+            }
+
+            $('#list').onclick = function (ev) {
+                var list = $('.list');
+                if(list.style.visibility !== 'hidden')
+                {
+                    list.style.visibility = 'hidden';
+                }else {
+                    list.style.visibility = 'visible';
+                }
+
+            }
+            var children = $('.list').children[0].children;
+            for(var children_i = 0; children_i < children.length; children_i++) {
+                var li = children[children_i];
+                li.ondblclick = function (ev) {
+                    console.log('dbl click');
+                    console.log(li);
+                    if(li['id'].length > 0) {
+                        console.log(id);
+                        lastIndex = currentIndex;
+                        currentIndex = parseInt(id[1]);
+                        loadMusic(musicList[currentIndex]);
+                    }
+                }
+            }
+
+
+
+        </script>
+
+</body>
+</html>
